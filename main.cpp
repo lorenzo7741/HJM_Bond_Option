@@ -4,7 +4,6 @@
 #include "utils.h" 
 using namespace std;
 
-
 class DiscountCurve {
     // Access specifier
     public:
