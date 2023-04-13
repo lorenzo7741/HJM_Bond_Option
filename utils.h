@@ -52,33 +52,8 @@ double integral(function<double (double)> f, double a, double b, int n) {
     return sum; // Return result
 }
 
-
-/*
-int main(){
-        // Discount Curve
-    vector<double> zcb_tenor = {1, 2, 3, 4, 5}; // T
-    vector<double> zcb_price = {0.97, 0.95, 0.91, 0.9, 0.88}; // T -> P_0(T)
-    double r = 0;
-    double K = 98; // strike price
-    double S = 0.5; // option maturity
-    double T = 0.8; // option maturity
-    
-    double t = 0; // current time
-    double sigma1 = 0.2; // first term of volatility
-    double sigma2 = 0.1; // second term of volatility
-    double lambda = 0.5; // exponential decay parameter
-    double n = 1000;
-    bool call = true; // option type
-    double res;
-
-    auto int_sigma = [&](double s) -> double { 
-        return sigma_sq_mod(sigma1, sigma2, lambda, s, S, T);} ;
-
-    res = integral(int_sigma, t, S, n);
-    cout << res;
-    return 0;
+double cdf(double x) {
+    return 0.5*(1+erf(x/sqrt(2.0)));
 }
-
-*/
 
 //#endif
