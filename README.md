@@ -118,7 +118,7 @@ The processes $\frac{P_t(T)}{B_t}$ are martingales if and only if
 
 Once chosen an expression for the volatility $\sigma_t(T)$ we set
 ```math
-f_t(T)= f^*_0(T)+ \int_0^t \sigma_t(T) \int_t^T \sigma_t(u) du + \int_t^T \sigma_s(T) dW_s
+f_t(T)= f^*_0(T)+ \sigma_t(T) \int_t^T \sigma_t(u) du +\sigma_t(T) dW_t
 ```
 where $f^*_0(T)$ are the instantaneous forward rates values observed in the market. The model is now automatically calibrated to the bond prices.
 
@@ -135,7 +135,7 @@ Let consider a call option with maturity $S$, strike $K$ and with underlying a z
 C_t(S,T)= P_t(T) \Phi(d_1) - K P_t(S) \Phi(d_2)$
 ```
 ```math
-d_1 = \frac{ln( \frac{P(T)}{(P(S) K)}) + \frac{1}{2} \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
+d_1 = \frac{\log( \frac{P(T)}{(P(S) K)}) + \frac{1}{2} \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
 ```
 ```math
 d_2 = d_1 - \sqrt{\Sigma^2_{S, T}(t)}
@@ -144,6 +144,7 @@ d_2 = d_1 - \sqrt{\Sigma^2_{S, T}(t)}
 \Sigma^2_{S, T}(t) = \int_t^S|| \int_S^T\sigma(s, u) du||^2 ds
 ```
 where:
+
 $P_t(T)$: Discount factor at time T (the price at $t$ of a ZCB with maturity $T$)
 
 $P_t(S)$: Discount factor at time S (the price at $t$ of a ZCB with maturity $S$)
