@@ -102,65 +102,56 @@ f_t(T)= \alpha_t(T) dt +\sigma_t(T) dW_t
 where $W_t$ is a Brownian motion under the risk-neutral measure. We  define directly the zero-coupon bond as $P_t(T)$, the short rate $r_t$ and th bank account $B_t$ with the usual formula:
 ```math
 r_t = f_t(t)
-B_t = e^{\int_0^t r_u du}
-P_t(T) = e^{\int_t^Tf_t(u) du}
 ```
- Under the risk-neutral measure the processes $\frac{P_t(T)}{B_t}$ must be martingales for all $T$. The following important theorem shows the conditions on the processes $\alpha_t(T)$ and $\sigma_t(T)$, that guarantee that the processes $\frac{P_t(T)}{B_t}$ are martingales.
-\begin{teo}[Heath Jarrow Morton]
-	The processes $\frac{P_t(T)}{B_t}$ are martingales if and only if
-	\begin{equation} \label{HJM}
-	\alpha_t(T)= \sigma_t(T) \int_t^T \sigma_t(u) du
-	\end{equation}
-\end{teo}
-Once chosen an expression for the volatility $\sigma_t(T)$ we can set
-\[
-f_t(T)= f^*_0(T)+ \int_0^t \alpha_s(T) ds + \int_0^t \sigma_s(T) dW_s
-\]
-where $f^*_0(T)$ are the instantaneous forward rates values observed in the market, hence the model is automatically calibrated to the bond prices.
-
-
-HJM models sta
-rt by modelling under the risk-neutral probability the instantaneous forward rate $f_t(T)$. Let $P_t(T)$ the price at time $t$ of a zero-coupon-bond (ZCB) that guarantees the holder an amount of $1$ at the maturity $T$. We recall that
-
+```math
+B_t = e^{\int_0^t r_u du}
+```
 ```math
 P_t(T) = e^{\int_t^Tf_t(u) du}
 ```
+ Under the risk-neutral measure the processes $\frac{P_t(T)}{B_t}$ must be martingales for all $T$. The following important theorem shows the conditions on the processes $\alpha_t(T)$ and $\sigma_t(T)$, that guarantee that processes $\frac{P_t(T)}{B_t}$ are martingales.
+### Proposition (Heats Jarrow Morton)
+The processes $\frac{P_t(T)}{B_t}$ are martingales if and only if
+```math
+	\alpha_t(T)= \sigma_t(T) \int_t^T \sigma_t(u) du
+```
 
-The main result of the HJM framework says that, if
+Once chosen an expression for the volatility $\sigma_t(T)$ we set
+```math
+f_t(T)= f^*_0(T)+ \int_0^t \alpha_s(T) ds + \int_0^t \sigma_s(T) dW_s
+```
+where $f^*_0(T)$ are the instantaneous forward rates values observed in the market. The model is now automatically calibrated to the bond prices.
 
-Therefore we suppose for $f_t(T)$,
+In practice $f^*_0(T)$ are not really observable in the market and often knowing them is not really necessary. Usually the curve observed in the market is $T \arrow P_0(T)$. 
 
-  
+### (Closed Formula for a Vanilla Option on Bond)
+In this section we will suppose the following framework for the HJM volatility. Given $sigma_1, $sigma_2$ and $ \lambda$ real numbers we define a two factor volatility
+```math
+\sigma_t(T) = ( \sigma_1, \sigma_2 e^{-\lambda(T-t)})
+```
 
-The mathematical formula for the method price in the OptionOnZcb class can be written as:
-
-$C_t(S,T)= P_t(T) \Phi(d_1) - K P_t(S) \Phi(d_2)$
-
+Let consider a call option with maturity $S$, strike $K$ and with underlying a zero-coupon-bond (ZCB) with maturity $T$. In the HJM framework, with the two factor volatility, the price of the call option is given by the following formula 
+```math
+C_t(S,T)= P_t(T) \Phi(d_1) - K P_t(S) \Phi(d_2)$
+```
+```math
+d_1 = \frac{ln(P(T)/(P(S) K)) + \frac{1}{2} * \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
+```
+```math
+d_2 = d_1 - \sqrt{\int_{0}^{S} \sigma^2(u, S, T) du}
+```
+```math
+\Sigma^2_{S, T}(t) = \int_t^S|| \int_S^T\sigma(s, u) du||^2 ds
+```
 where:
-
-  
-
-$P_t(T)$: Discount factor at time T
-
-$P_t(S)$: Discount factor at time S
-
+$P_t(T)$: Discount factor at time T (the price at $t$ of a ZCB with maturity $T$)
+$P_t(S)$: Discount factor at time S (the price at $t$ of a ZCB with maturity $S$)
 $K$: Strike price of the option on bond
+$t$: evaluation time
+$\Phi$: Cumulative distribution function of the standard normal distribution evaluated at $d_1$
 
-$\Phi(d_1)$: Cumulative distribution function of the standard normal distribution evaluated at $d_1$
 
 
-$d_1 = \frac{ln(P(T)/(P(S) * strike)) + \frac{1}{2} * \int_{0}^{S} \sigma^2(u, S, T) du}{\sqrt{\int_{0}^{S} \sigma^2(u, S, T) du}}$
 
-$\sigma^2(u, S, T) = \sigma_1^2 * (T - S)^2 + \frac{\sigma_2^2}{2\lambda} * (1 - e^{-2\lambda(S-u)}) * (1 - e^{-\lambda(T-S)})^2$
-
-$\Phi(d_2)$: Cumulative distribution function of the standard normal distribution evaluated at $d_2$
-
-  
-  
-
-$d_2 = d_1 - \sqrt{\int_{0}^{S} \sigma^2(u, S, T) du}$
-
-  
-  
 
 This formula calculates the price of an option on a zero coupon bond based on the HJM model parameters and the discount factors from a given discount curve.
