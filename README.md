@@ -4,21 +4,21 @@ This C++ code implements the Bond Option Pricing in a Heath-Jarrow-Morton (HJM) 
 
 The project contains:
 - **utils.h**: a file with some utils.  It contains:
-    * linear_interpolation: function to linearly interpolate a set of points
-    * integral: function to integrate a function in an interval
-    * cdf: cumulative density funcion of a standard gaussian $N(0,1)$
+    * **linear_interpolation**: function to linearly interpolate a set of points
+    * **integral**: function to integrate a function in an interval
+    * **cdf**: cumulative density funcion of a standard gaussian $N(0,1)$
 - **main.cpp**: the main of the project. It contains:
-    * The class **DiscountCurve**: a class that represents a Discount Curve with a linear interpolation
-    * The class **HjmModel**: a class to manage an HJM framework with a two-factor volatility
-    * The class **OptionOnZcb**: c class for an option on bond
+    * **DiscountCurve**: a class that represents a Discount Curve with a linear interpolation
+    * **HjmModel**: a class to manage an HJM framework with a two-factor volatility
+    * **OptionOnZcb**: c class for an option on bond
 
 #### DiscountCurve
 The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
-Attributes:
-- tenor (<vector> double): a vector of doubles representing tenors
-- value (<vector> double): a vector of doubles representing the values of the tenors
-Methods:
-- at: evaluate the discount curve at a specific tenor with a linear interpoation
+- Attributes:
+* tenor (<vector> double): a vector of doubles representing tenors
+* value (<vector> double): a vector of doubles representing the values of the tenors
+- Methods:
+* at: evaluate the discount curve at a specific tenor with a linear interpoation
 
 Example:
 ```cpp
@@ -35,12 +35,12 @@ int main(){
 
 #### HjmModel
 A class to collect the functions and the parameters of an HJM model with a two-factor volatility.
-Attributes:
-- sigma1 (double): instantaneous volatility
-- sigma2 (double): long-run volatility
-- lambda (double): mean reversion parameter of sigma2
-Methods:
-- sigma_sq_mod: function that evaluates the instantaneous volatility depending on both sigma1, sigma2 and lambda
+- Attributes:
+* sigma1 (double): instantaneous volatility
+* sigma2 (double): long-run volatility
+* lambda (double): mean reversion parameter of sigma2
+- Methods:
+* sigma_sq_mod: function that evaluates the instantaneous volatility depending on both sigma1, sigma2 and lambda
 
 Example:
 ```cpp
