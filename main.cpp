@@ -5,17 +5,18 @@
 using namespace std;
 
 class DiscountCurve {
-/*
-The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
-Attributes:
-- tenor (<vector> double): a vector of doubles representing tenors
-- value (<vector> double): a vector of doubles representing the values of the tenors
-Methods:
-- at: evaluate the discount curve at a specific tenor with a linear interpoation
- */
+    /*
+    The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
+    Attributes:
+    - tenor (<vector> double): a vector of doubles representing tenors
+    - value (<vector> double): a vector of doubles representing the values of the tenors
+    Methods:
+    - at: evaluate the discount curve at a specific tenor with a linear interpoation
+    */
     public:
     vector<double> tenor;
     vector<double> value;
+
     
     DiscountCurve(vector<double> _tenor, vector<double> _value)
     {
@@ -36,6 +37,30 @@ Methods:
 };
 
 class HjmModel{
+    /* 
+    A class to collect the functions and the parameters of an HJM model with a two-factor volatility.
+    - Attributes:
+        * sigma1 (double): instantaneous volatility
+        * sigma2 (double): long-run volatility
+        * lambda (double): mean reversion parameter of sigma2
+    - Methods:
+        * sigma_sq_mod: function that evaluates the instantaneous volatility depending on both sigma1, sigma2 and lambda
+
+    Example:
+    ```cpp
+    int main(){
+        // HJM parameters
+        double sigma1 = 0.3;
+        double sigma2 = 0.2;
+        double lambda = 2;
+
+        // Discount Curve Initialization
+        HjmModel hjm(sigma1, sigma2, lambda);
+        hjm.print();
+        return 0;
+    }
+    ```
+    */
     public:
     // Data  Members
     double sigma1;
@@ -63,6 +88,16 @@ class HjmModel{
 };
 
 class OptionOnZcb{
+    /*An OptionOnZcb represents an option on a Zero-Coupon Bond.
+    - Attributes
+        * strike (double): the strike price of the option
+        * option_ttm (double): the time to maturity of the option  
+        * bond_ttm (double): the time to maturity of the underlying bond
+        * iscall (bool): a boolean representing whether the option is a call option (true) or put option (false)
+    - Methods:
+        * price: a method that evaluates the price of the option in a HJM framework
+    */
+
     public:
     double strike;
     double option_ttm;

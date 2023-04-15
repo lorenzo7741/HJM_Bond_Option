@@ -5,18 +5,18 @@ This C++ code implements the Bond Option Pricing in a Heath-Jarrow-Morton (HJM) 
 The project contains:
 - **utils.h**: a file with some utils.  It contains:
     * **linear_interpolation**: function to linearly interpolate a set of points
-    * **integral**: function to integrate a function in an interval
+    * **integral**: function to integrate a function nn an interval
     * **cdf**: cumulative density funcion of a standard gaussian $N(0,1)$
 - **main.cpp**: the main of the project. It contains:
     * **DiscountCurve**: a class that represents a Discount Curve with a linear interpolation
     * **HjmModel**: a class to manage an HJM framework with a two-factor volatility
-    * **OptionOnZcb**: c class for an option on bond
+    * **OptionOnZcb**: a class for an option on bond
 
 #### DiscountCurve
 The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
 - Attributes:
-    * tenor (<vector> double): a vector of doubles representing tenors
-    * value (<vector> double): a vector of doubles representing the values of the tenors
+    * tenor (vector double): a vector of doubles representing tenors
+    * value (vector double): a vector of doubles representing the values of the tenors
 - Methods:
     * at: evaluate the discount curve at a specific tenor with a linear interpoation
 
@@ -37,10 +37,10 @@ int main(){
 A class to collect the functions and the parameters of an HJM model with a two-factor volatility.
 - Attributes:
     * sigma1 (double): instantaneous volatility
-    * sigma2 (double): long-run volatility
+    * sigma2 (double): long-run time-dependent volatility
     * lambda (double): mean reversion parameter of sigma2
 - Methods:
-    * sigma_sq_mod: function that evaluates the instantaneous volatility depending on both sigma1, sigma2 and lambda
+    * sigma_sq_mod: function that evaluates the instantaneous volatility depending on sigma1, sigma2 and lambda
 
 Example:
 ```cpp
@@ -60,9 +60,9 @@ int main(){
 #### OptionOnZcb
 An OptionOnZcb represents an option on a Zero-Coupon Bond.
 - Attributes
-    * strike (double): a double representing the strike price of the option
-    * option_ttm (double): a double representing the time to maturity of the option  
-    * bond_ttm (double): a double representing the time to maturity of the underlying bond
+    * strike (double): the strike price of the option
+    * option_ttm (double): the time to maturity of the option  
+    * bond_ttm (double): the time to maturity of the underlying bond
     * iscall (bool): a boolean representing whether the option is a call option (true) or put option (false)
 - Methods:
     * price: a method that evaluates the price of the option in a HJM framework
@@ -82,8 +82,8 @@ int main(){
 
     // Options parameters
     double strike = 0.5;
-    double option_maturity = 1.5; /* 2 years */
-    double bond_maturity = 4.5; /* 2 years and half */
+    double option_maturity = 1.5; /* 1 year and half */
+    double bond_maturity = 4.5; /* 5 years and half */
     double iscall = true;
     double opt_price;
 
@@ -104,8 +104,6 @@ int main(){
     return 0;
 };
 ```
-**main.cpp**
-The main function initializes the market ZCB prices, HJM model parameters, and option parameters. The DiscountCurve, HjmModel, and OptionOnZcb objects are initialized with their corresponding parameters. The option price is calculated using the price() function of the OptionOnZcb class. Finally, the option price is printed to the console. 
   
 ## HJM Model
 
@@ -115,7 +113,7 @@ The Heath Jarrow Morton (HJM) models consist in choosing a dynamic for the insta
 ```math
 d f_t(T)= \alpha_t(T) dt +\sigma_t(T) dW_t
 ```
-where $W_t$ is a Brownian motion under the risk-neutral measure. We  define directly the zero-coupon bond as $P_t(T)$, the short rate $r_t$ and th bank account $B_t$ with the usual formula:
+where $W_t$ is a Brownian motion under the risk-neutral measure. We  define directly the zero-coupon-bond as $P_t(T)$, the short rate $r_t$ and th bank account $B_t$ with the usual formula:
 ```math
 r_t = f_t(t)
 ```
@@ -172,4 +170,4 @@ $t$: evaluation time
 
 $\Phi$: Cumulative distribution function of the standard normal distribution
 
-This formula calculates the price of an option on a zero coupon bond based on the HJM model parameters and the discount factors from a given discount curve.
+This formula calculates the price of an option on a zero-coupon-bond based on the HJM model parameters and the discount factors from a given discount curve.
