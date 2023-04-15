@@ -65,7 +65,7 @@ An OptionOnZcb represents an option on a Zero-Coupon Bond.
     * bond_ttm (double): a double representing the time to maturity of the underlying bond
     * iscall (bool): a boolean representing whether the option is a call option (true) or put option (false)
 - Methods:
-* price: a method that evaluates the price of the option in a HJM framework
+    * price: a method that evaluates the price of the option in a HJM framework
 
 Example:
 ```cpp
@@ -113,7 +113,7 @@ In this section we recall the main results about the Heath–Jarrow–Morton (HJ
 
 The Heath Jarrow Morton (HJM) models consist in choosing a dynamic for the instantaneous forward rate $f_t(T)$, directly under the risk-neutral measure $\mathbb{Q}$. Therefore we choose processes $\alpha_t(T)$ and $\sigma_t(T)$ such that
 ```math
-f_t(T)= \alpha_t(T) dt +\sigma_t(T) dW_t
+d f_t(T)= \alpha_t(T) dt +\sigma_t(T) dW_t
 ```
 where $W_t$ is a Brownian motion under the risk-neutral measure. We  define directly the zero-coupon bond as $P_t(T)$, the short rate $r_t$ and th bank account $B_t$ with the usual formula:
 ```math
@@ -125,18 +125,19 @@ B_t = e^{\int_0^t r_u du}
 ```math
 P_t(T) = e^{\int_t^Tf_t(u) du}
 ```
- Under the risk-neutral measure the processes $\frac{P_t(T)}{B_t}$ must be martingales for all $T$. The following important theorem shows the conditions on the processes $\alpha_t(T)$ and $\sigma_t(T)$, that guarantee that processes $\frac{P_t(T)}{B_t}$ are martingales.
-### Proposition (Heats Jarrow Morton)
+ Under the risk-neutral measure the processes $\frac{P_t(T)}{B_t}$ must be martingales for all $T$. We recall the important theorem that shows the conditions on the processes $\alpha_t(T)$ and $\sigma_t(T)$, that guarantee that processes $\frac{P_t(T)}{B_t}$ are martingales:
+
 The processes $\frac{P_t(T)}{B_t}$ are martingales if and only if
 ```math
 	\alpha_t(T)= \sigma_t(T) \int_t^T \sigma_t(u) du
 ```
 
+
 Once chosen an expression for the volatility $\sigma_t(T)$ we set
 ```math
-f_t(T)= f^*_0(T)+ \sigma_t(T) \int_t^T \sigma_t(u) du +\sigma_t(T) dW_t
+df_t(T)=  \sigma_t(T) \int_t^T \sigma_t(u) du dt + \sigma_t(T) dW_t
 ```
-where $f^*_0(T)$ are the instantaneous forward rates values observed in the market. The model is now automatically calibrated to the bond prices.
+where $f_0(T)$ are choosen in order to fit the the $f^*_0(T)$ instantaneous forward rates  observed in the market. This guarantee a model automatically calibrated to the bond prices observed in the market.
 
 In practice $f^*_0(T)$ are not really observable in the market and often knowing them is not really necessary. Usually the curve observed in the market is $T \rightarrow P_0(T)$. 
 
