@@ -118,13 +118,13 @@ The processes $\frac{P_t(T)}{B_t}$ are martingales if and only if
 
 Once chosen an expression for the volatility $\sigma_t(T)$ we set
 ```math
-f_t(T)= f^*_0(T)+ \int_0^t \alpha_s(T) ds + \int_0^t \sigma_s(T) dW_s
+f_t(T)= f^*_0(T)+ \int_0^t \sigma_t(T) \int_t^T \sigma_t(u) du + \int_t^T \sigma_s(T) dW_s
 ```
 where $f^*_0(T)$ are the instantaneous forward rates values observed in the market. The model is now automatically calibrated to the bond prices.
 
-In practice $f^*_0(T)$ are not really observable in the market and often knowing them is not really necessary. Usually the curve observed in the market is $T \arrow P_0(T)$. 
+In practice $f^*_0(T)$ are not really observable in the market and often knowing them is not really necessary. Usually the curve observed in the market is $T \rightarrow P_0(T)$. 
 
-### (Closed Formula for a Vanilla Option on Bond)
+### Closed Formula for a Vanilla Option on Bond
 In this section we will suppose the following framework for the HJM volatility. Given $sigma_1, $sigma_2$ and $ \lambda$ real numbers we define a two factor volatility
 ```math
 \sigma_t(T) = ( \sigma_1, \sigma_2 e^{-\lambda(T-t)})
@@ -135,19 +135,23 @@ Let consider a call option with maturity $S$, strike $K$ and with underlying a z
 C_t(S,T)= P_t(T) \Phi(d_1) - K P_t(S) \Phi(d_2)$
 ```
 ```math
-d_1 = \frac{ln(P(T)/(P(S) K)) + \frac{1}{2} * \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
+d_1 = \frac{ln( \frac{P(T)}{(P(S) K)}) + \frac{1}{2} \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
 ```
 ```math
-d_2 = d_1 - \sqrt{\int_{0}^{S} \sigma^2(u, S, T) du}
+d_2 = d_1 - \sqrt{\Sigma^2_{S, T}(t)}
 ```
 ```math
 \Sigma^2_{S, T}(t) = \int_t^S|| \int_S^T\sigma(s, u) du||^2 ds
 ```
 where:
 $P_t(T)$: Discount factor at time T (the price at $t$ of a ZCB with maturity $T$)
+
 $P_t(S)$: Discount factor at time S (the price at $t$ of a ZCB with maturity $S$)
+
 $K$: Strike price of the option on bond
+
 $t$: evaluation time
+
 $\Phi$: Cumulative distribution function of the standard normal distribution evaluated at $d_1$
 
 
