@@ -1,96 +1,47 @@
 # Bond Option Pricing in a Heath-Jarrow-Morton Framework
 
-  
+This C++ code implements the Bond Option Pricing in a Heath-Jarrow-Morton (HJM) framework. The HJM model is a mathematical framework used for modeling the evolution of interest rates over time. In particular, this code calculates the price of an option on a Zero-Coupon-Bond (ZCB) using the HJM model.
 
-This C++ code implements the Bond Option Pricing in a Heath-Harrow-Morton (HJM) framework. The HJM model is a mathematical framework used for modeling the evolution of interest rates over time. In particular, this code calculates the price of an option on a Zero-Coupon Bond (ZCB) using the HJM model.
+The project contains:
+- **utils.h**: a file with some utils.  It contains:
+    * linear_interpolation: function to linearly interpolate a set of points
+    * integral: function to integrate a function in an interval
+    * cdf: cumulative density funcion of a standard gaussian $N(0,1)$
+- **main.cpp**: the main of the project. It contains:
+    * The class **DiscountCurve**: a class that represents a Discount Curve with a linear interpolation
+    * The class **HjmModel**: a class to manage an HJM framework with a two-factor volatility
+    * The class **OptionOnZcb**: c class for an option on bond
 
-  
 
-  
+**HjmModel**
 
-## HJM Model
+A class to collect the functions and the parameters of an HJM model with a two-factor volatility. Methods a attributes:
+- sigma1: instantaneous volatility
+- sigma2: long-run volatility
+- lambda: mean reversion parameter of sigma2
+- sigma_sq_mod: function that evaluate the instantaneous volatility depending on both sigma1, sigma2 and lambda
 
-  
-
-The HJM model is defined by three parameters:
-
-  
-
-  
-
-sigma1 - volatility of the short rate
-
-  
-
-sigma2 - volatility of the long rate
-
-  
-
-lambda - mean reversion parameter
-
-  
-
-The HJM model also defines a function sigma_sq_mod(t, S, T), which calculates the square of the volatility between times S and T. The formula for sigma_sq_mod is:
-
-  
-
-  
-
-```
-
-  
-
-pow(-sigma1*(T-S), 2) + pow(-sigma2*exp(lambda*t)*(exp(-lambda*S)-exp(-lambda*T))/lambda, 2)
-```
-
-  
-
-Discount Curve
-
-  
+**DiscountCurve**
 
 The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values. The class DiscountCurve has two data members:
 
-tenor - a vector of doubles representing tenors
+- tenor: a vector of doubles representing tenors
+- value: a vector of doubles representing the values of the tenors
 
-  
+#### OptionOnZcb
 
-value - a vector of doubles representing the values of the tenors
+An OptionOnZcb represents an option on a Zero-Coupon Bond. These its attributes andmethods:
+- strike: a double representing the strike price of the option
+- option_ttm: a double representing the time to maturity of the option  
+- bond_ttm: a double representing the time to maturity of the underlying bond
+- iscall: a boolean representing whether the option is a call option (true) or put option (false)
+Methods:
+- price: a method that evaluates the price of the option in a HJM framework
 
-OptionOnZcb
-
-An OptionOnZcb represents an option on a Zero-Coupon Bond. The OptionOnZcb class has four data members:
-
-strike - a double representing the strike price of the option
-
- 
-option_ttm - a double representing the time to maturity of the option
-
-  
-
-bond_ttm - a double representing the time to maturity of the underlying bond
-
-  
-
-iscall - a boolean representing whether the option is a call option (true) or put option (false)
-
-  
-
-The price of an OptionOnZcb is calculated using the Black-Scholes formula:
-
-```
-d1 = (ln(P(T)/P(S) * Strike) + 0.5 * sigma_sq_mod(S,T))/sqrt(sigma_sq_mod(S,T))
-d2 = d1 - sqrt(sigma_sq_mod(S,T))
-opt_price = P(T) * cdf(d1) - Strike * P(S) * cdf(d2)
-where $P(T)$ and $P(S)$ are the discount factors for the bond maturity and option maturity, respectively, and cdf is the cumulative distribution function of the standard normal distribution.
-
-  
-
-## Main Function
+**main.cpp**
 The main function initializes the market ZCB prices, HJM model parameters, and option parameters. The DiscountCurve, HjmModel, and OptionOnZcb objects are initialized with their corresponding parameters. The option price is calculated using the price() function of the OptionOnZcb class. Finally, the option price is printed to the console.
 
   
-```
 ## HJM Model
 
 In this section we recall the main results about the Heath–Jarrow–Morton (HJM) framework and we provide a closed formula for the pricing of an option on bond when the dynamic of the instantaneous forward rate is driven by a two-factor volatility.
@@ -125,7 +76,7 @@ where $f^*_0(T)$ are the instantaneous forward rates values observed in the mark
 In practice $f^*_0(T)$ are not really observable in the market and often knowing them is not really necessary. Usually the curve observed in the market is $T \rightarrow P_0(T)$. 
 
 ### Closed Formula for a Vanilla Option on Bond
-In this section we will suppose the following framework for the HJM volatility. Given $sigma_1, $sigma_2$ and $ \lambda$ real numbers we define a two factor volatility
+In this section we will suppose the following framework for the HJM volatility. Given $\sigma_1, \sigma_2$ and $ \lambda$ real numbers we define a two factor volatility
 ```math
 \sigma_t(T) = ( \sigma_1, \sigma_2 e^{-\lambda(T-t)})
 ```
@@ -135,13 +86,13 @@ Let consider a call option with maturity $S$, strike $K$ and with underlying a z
 C_t(S,T)= P_t(T) \Phi(d_1) - K P_t(S) \Phi(d_2)$
 ```
 ```math
-d_1 = \frac{\log( \frac{P(T)}{(P(S) K)}) + \frac{1}{2} \Sigma^2_{S, T}(t) du}{\sqrt{\Sigma^2_{S, T}(t)}}
+d_1 = \frac{\log( \frac{P(T)}{P(S) K}) + \frac{1}{2} \Sigma^2_{S, T}(t)}{\sqrt{\Sigma^2_{S, T}(t)}}
 ```
 ```math
 d_2 = d_1 - \sqrt{\Sigma^2_{S, T}(t)}
 ```
 ```math
-\Sigma^2_{S, T}(t) = \int_t^S|| \int_S^T\sigma(s, u) du||^2 ds
+\Sigma^2_{S, T}(t) = \int_t^S|| \int_S^T\sigma_s(u) du||^2 ds
 ```
 where:
 
@@ -153,10 +104,6 @@ $K$: Strike price of the option on bond
 
 $t$: evaluation time
 
-$\Phi$: Cumulative distribution function of the standard normal distribution evaluated at $d_1$
-
-
-
-
+$\Phi$: Cumulative distribution function of the standard normal distribution
 
 This formula calculates the price of an option on a zero coupon bond based on the HJM model parameters and the discount factors from a given discount curve.
