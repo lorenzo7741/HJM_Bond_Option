@@ -21,7 +21,7 @@ Methods:
 - at: evaluate the discount curve at a specific tenor with a linear interpoation
 
 Example:
-```
+```cpp
 int main(){
     // ZCB prices obtained from the market
     vector<double> zcb_tenor = {0, 1, 2, 3, 4, 5}; // T
