@@ -5,9 +5,15 @@
 using namespace std;
 
 class DiscountCurve {
-    // Access specifier
+/*
+The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
+Attributes:
+- tenor (<vector> double): a vector of doubles representing tenors
+- value (<vector> double): a vector of doubles representing the values of the tenors
+Methods:
+- at: evaluate the discount curve at a specific tenor with a linear interpoation
+ */
     public:
-    // Data  Members
     vector<double> tenor;
     vector<double> value;
     
@@ -16,7 +22,6 @@ class DiscountCurve {
         tenor = _tenor;
         value = _value;
     }
-    // Member Functions()
     void print() {
         cout << "Discount Curve:" << endl;
         for(int i=0; i<tenor.size(); i++){

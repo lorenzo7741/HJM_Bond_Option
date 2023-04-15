@@ -12,29 +12,43 @@ The project contains:
     * The class **HjmModel**: a class to manage an HJM framework with a two-factor volatility
     * The class **OptionOnZcb**: c class for an option on bond
 
+#### DiscountCurve
+The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values.
+Attributes:
+- tenor (<vector> double): a vector of doubles representing tenors
+- value (<vector> double): a vector of doubles representing the values of the tenors
+Methods:
+- at: evaluate the discount curve at a specific tenor with a linear interpoation
 
-**HjmModel**
+Example:
+```
+int main(){
+    // ZCB prices obtained from the market
+    vector<double> zcb_tenor = {0, 1, 2, 3, 4, 5}; // T
+    vector<double> zcb_price = {1, 0.97, 0.94, 0.91, 0.9, 0.88}; // T -> P_0(T)
+    // Discount Curve Initialization
+    DiscountCurve P(zcb_tenor, zcb_price);
+    cout << P.at(0.5);
+    return 0;
+}
+```
 
-A class to collect the functions and the parameters of an HJM model with a two-factor volatility. Methods a attributes:
-- sigma1: instantaneous volatility
-- sigma2: long-run volatility
-- lambda: mean reversion parameter of sigma2
+#### HjmModel
+A class to collect the functions and the parameters of an HJM model with a two-factor volatility.
+Attributes:
+- sigma1 (double): instantaneous volatility
+- sigma2 (double): long-run volatility
+- lambda (double): mean reversion parameter of sigma2
+Methods:
 - sigma_sq_mod: function that evaluate the instantaneous volatility depending on both sigma1, sigma2 and lambda
 
-**DiscountCurve**
-
-The Discount Curve represents the relationship between the present value of a future cash flow and its maturity. The Discount Curve is represented as a vector of tenors and their corresponding values. The class DiscountCurve has two data members:
-
-- tenor: a vector of doubles representing tenors
-- value: a vector of doubles representing the values of the tenors
 
 #### OptionOnZcb
-
 An OptionOnZcb represents an option on a Zero-Coupon Bond. These its attributes andmethods:
-- strike: a double representing the strike price of the option
-- option_ttm: a double representing the time to maturity of the option  
-- bond_ttm: a double representing the time to maturity of the underlying bond
-- iscall: a boolean representing whether the option is a call option (true) or put option (false)
+- strike (double): a double representing the strike price of the option
+- option_ttm (double): a double representing the time to maturity of the option  
+- bond_ttm (double): a double representing the time to maturity of the underlying bond
+- iscall (bool): a boolean representing whether the option is a call option (true) or put option (false)
 Methods:
 - price: a method that evaluates the price of the option in a HJM framework
 
