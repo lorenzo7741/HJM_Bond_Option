@@ -40,8 +40,22 @@ Attributes:
 - sigma2 (double): long-run volatility
 - lambda (double): mean reversion parameter of sigma2
 Methods:
-- sigma_sq_mod: function that evaluate the instantaneous volatility depending on both sigma1, sigma2 and lambda
+- sigma_sq_mod: function that evaluates the instantaneous volatility depending on both sigma1, sigma2 and lambda
 
+Example:
+```cpp
+int main(){
+    // HJM parameters
+    double sigma1 = 0.3;
+    double sigma2 = 0.2;
+    double lambda = 2;
+
+    // Discount Curve Initialization
+    HjmModel hjm(sigma1, sigma2, lambda);
+    hjm.print();
+    return 0;
+}
+```
 
 #### OptionOnZcb
 An OptionOnZcb represents an option on a Zero-Coupon Bond. These its attributes andmethods:
@@ -52,6 +66,42 @@ An OptionOnZcb represents an option on a Zero-Coupon Bond. These its attributes 
 Methods:
 - price: a method that evaluates the price of the option in a HJM framework
 
+Example:
+```cpp
+int main(){
+    // ZCB prices obtained from the market
+    vector<double> zcb_tenor = {0, 1, 2, 3, 4, 5}; // T
+    vector<double> zcb_price = {1, 0.97, 0.94, 0.91, 0.9, 0.88}; // T -> P_0(T)
+    
+    // HJM parameters
+    double sigma1 = 0.3;
+    double sigma2 = 0.2;
+    double lambda = 2;
+
+    // Options parameters
+    double strike = 0.5;
+    double option_maturity = 1.5; /* 2 years */
+    double bond_maturity = 4.5; /* 2 years and half */
+    double iscall = true;
+    double opt_price;
+
+    // Discount Curve Initialization
+    DiscountCurve P(zcb_tenor, zcb_price);
+
+    // HJM Model Initialization
+    HjmModel hjm(sigma1, sigma2, lambda);
+
+    // Option Initialization
+    OptionOnZcb opt(strike, option_maturity, bond_maturity, iscall);
+
+    P.print();
+    hjm.print();
+    opt.print();
+    opt_price = opt.price(P, hjm);
+    cout << "Price: " << opt_price;
+    return 0;
+};
+```
 **main.cpp**
 The main function initializes the market ZCB prices, HJM model parameters, and option parameters. The DiscountCurve, HjmModel, and OptionOnZcb objects are initialized with their corresponding parameters. The option price is calculated using the price() function of the OptionOnZcb class. Finally, the option price is printed to the console.
 
